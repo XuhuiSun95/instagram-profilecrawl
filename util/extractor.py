@@ -132,30 +132,22 @@ def extract_exact_info(info):
 def extract_followers(browser, username):
     InstaLogger.logger().info('Extracting follower from ' + username)
     try:
-        user_link = "https://www.instagram.com/{}".format(username)
+        user_link = "https://www.instagram.com/accounts/access_tool/accounts_following_you"
         web_adress_navigator(browser, user_link)
     except PageNotFound404 as e:
         raise NoInstaProfilePageFound(e)
     sleep(5)
 
-    # find number of followers
-    elem = browser.find_element_by_xpath(
-        "//span[@id='react-root']//header[@class='vtbgv ']//ul[@class='k9GMp ']/child::li[2]/a/span")
-    elem.click()
-    sleep(15)
-
-    # remove suggestion list and load 24 list elements after this
-    browser.execute_script("document.getElementsByClassName('isgrP')[0].scrollTo(0,500)")
-    sleep(10)
-
-    elems = browser.find_elements_by_xpath("//body//div[@class='PZuss']//a[@class='FPmhX notranslate _0imsa ']")
-    for i in range(12):
+    print('here1')
+    elems = browser.find_elements_by_xpath("//body//main[@class='fIcML']//section//div[@class='-utLf']")
+    for i in range(10):
         val = elems[i].get_attribute('innerHTML')
         with open("out.txt", "a+") as outfile:
             outfile.write(val + "\n");
+    print('here2')
 
-    for i in range(12):
-        browser.execute_script("document.getElementsByClassName('PZuss')[0].children[0].remove()")
+    for i in range(10):
+        browser.execute_script("document.getElementsByClassName('fIcML')[0].children[0].remove()")
 
     isDone = False
 
