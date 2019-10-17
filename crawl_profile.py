@@ -36,14 +36,20 @@ except Exception as exc:
     print(exc)
     sys.exit()
 
+Settings.login_username = 'ericsun1995'
+Settings.login_password = '0123456789'
+Settings.scrape_follower = True
+Settings.scrape_posts_likers = False
+Settings.scrape_posts_infos = False
+
 try:
     if len(Settings.login_username) != 0:
         login(browser, Settings.login_username, Settings.login_password)
 except Exception as exc:
     print("Error login user: " + Settings.login_username)
     sys.exit()
-    
-    
+
+
 try:
     usernames = get_all_user_names()
     for username in usernames:
@@ -56,12 +62,12 @@ try:
             print("Error with user " + username)
             sys.exit(1)
 
-        Datasaver.save_profile_json(username,information)
+        # Datasaver.save_profile_json(username,information)
 
-        print ("Number of users who commented on their profile is ", len(user_commented_list),"\n")
+        # print ("Number of users who commented on their profile is ", len(user_commented_list),"\n")
 
-        Datasaver.save_profile_commenters_txt(username,user_commented_list)
-        print ("\nFinished. The json file and nicknames of users who commented were saved in profiles directory.\n")
+        # Datasaver.save_profile_commenters_txt(username,user_commented_list)
+        # print ("\nFinished. The json file and nicknames of users who commented were saved in profiles directory.\n")
 
 except KeyboardInterrupt:
     print('Aborted...')

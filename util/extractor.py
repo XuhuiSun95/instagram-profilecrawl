@@ -80,7 +80,7 @@ def get_user_info(browser, username):
                     if isprivate == True:
                         InstaLogger.logger().info("Cannot get Follower List - private account")
                     else:
-                        followers['list'] = extract_followers(browser, username)
+                        extract_followers(browser, username)
             except Exception as exception:
                 # Output unexpected Exceptions.
                 print("Unexpected error:", sys.exc_info()[0])
@@ -138,8 +138,6 @@ def extract_followers(browser, username):
         raise NoInstaProfilePageFound(e)
     sleep(5)
 
-    followers = []
-
     # find number of followers
     elem = browser.find_element_by_xpath(
         "//span[@id='react-root']//header[@class='vtbgv ']//ul[@class='k9GMp ']/child::li[2]/a/span")
@@ -153,7 +151,8 @@ def extract_followers(browser, username):
     elems = browser.find_elements_by_xpath("//body//div[@class='PZuss']//a[@class='FPmhX notranslate _0imsa ']")
     for i in range(12):
         val = elems[i].get_attribute('innerHTML')
-        followers.append(val)
+        with open("out.txt", "a+") as outfile:
+            outfile.write(val + "\n");
 
     for i in range(12):
         browser.execute_script("document.getElementsByClassName('PZuss')[0].children[0].remove()")
@@ -168,9 +167,12 @@ def extract_followers(browser, username):
                 "document.getElementsByClassName('isgrP')[0].scrollTo(0,document.getElementsByClassName('isgrP')[0].scrollHeight)")
 
             while 1:
+                list_num = 0
                 try:
-                    if int(browser.execute_script(
-                            "return document.getElementsByClassName('PZuss')[0].children.length")) == 24:
+                    list_num = int(browser.execute_script(
+                            "return document.getElementsByClassName('PZuss')[0].children.length"));
+                    print(list_num)
+                    if list_num != 0:
                         break
                 except (KeyboardInterrupt, SystemExit):
                     # f.close()
@@ -182,19 +184,21 @@ def extract_followers(browser, username):
                     break
 
             if isDone:
+                print('done')
                 break
 
             elems = browser.find_elements_by_xpath("//body//div[@class='PZuss']//a[@class='FPmhX notranslate _0imsa ']")
-            list_segment = ""
-            for i in range(12):
+            range_num = list_num - 12
+            for i in range(range_num):
                 val = elems[i].get_attribute('innerHTML')
-                list_segment += (val + '\n')
-                followers.append(val)
+                with open("out.txt", "a+") as outfile:
+                    outfile.write(val + "\n");
 
-            for i in range(12):
+            for i in range(range_num):
                 browser.execute_script("document.getElementsByClassName('PZuss')[0].children[0].remove()")
 
             print(time() - start)
+
 
         except (KeyboardInterrupt, SystemExit):
             # f.close()
@@ -202,14 +206,11 @@ def extract_followers(browser, username):
         except:
             continue
 
-    list_segment = ""
     elems = browser.find_elements_by_xpath("//body//div[@class='PZuss']//a[@class='FPmhX notranslate _0imsa ']")
     for i in range(len(elems)):
         val = elems[i].get_attribute('innerHTML')
-        list_segment += (val + '\n')
-        followers.append(val)
-
-    return followers
+        with open("out.txt", "a+") as outfile:
+            outfile.write(val + "\n");
 
 
 def extract_user_posts(browser, num_of_posts_to_do):
