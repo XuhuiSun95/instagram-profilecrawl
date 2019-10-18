@@ -98,3 +98,4 @@ virtualenv/
 # Max OSX files
 .DS_Store
 out.txt
+*.data
