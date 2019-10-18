@@ -49,12 +49,11 @@ except Exception as exc:
 
 try:
     usernames = get_all_user_names_from_file()
+    with open("out.csv", "a+") as outfile:
+        outfile.write("Username" + ", " + "Follower Count" + ", " + "Verified" + "\n")
     for username in usernames:
-        print('Extracting information from ' + username)
-        information = []
-        user_commented_list = []
         try:
-            information = extract_simple_information(browser, username)
+            extract_simple_information(browser, username)
         except:
             print("Error with user " + username)
             sys.exit(1)

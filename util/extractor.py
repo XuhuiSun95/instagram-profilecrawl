@@ -411,29 +411,31 @@ def get_simple_user_info(browser, username):
         InstaLogger.logger().error("Infos (Following, Abo, Posts) is empty")
 
 
-    information = {
-        # 'alias': alias,
-        'username': username,
-        'verified': isVerified,
-        # 'bio': bio,
-        # 'prof_img': prof_img,
-        # 'num_of_posts': num_of_posts,
-        'followers': followers,
-        # 'following': following,
-        # 'bio_url': bio_url,
-        # 'isprivate': isprivate,
-    }
+    # information = {
+    #     # 'alias': alias,
+    #     'username': username,
+    #     'verified': isVerified,
+    #     # 'bio': bio,
+    #     # 'prof_img': prof_img,
+    #     # 'num_of_posts': num_of_posts,
+    #     'followers': followers,
+    #     # 'following': following,
+    #     # 'bio_url': bio_url,
+    #     # 'isprivate': isprivate,
+    # }
+    
 
     # InstaLogger.logger().info("alias name: " + information['alias'])
     # InstaLogger.logger().info("bio: " + information['bio'])
     # InstaLogger.logger().info("url: " + information['bio_url'])
     # InstaLogger.logger().info("Posts: " + str(information['num_of_posts']))
-    InstaLogger.logger().info("Username: " + str(information['username']))
-    InstaLogger.logger().info("Follower: " + str(information['followers']['count']))
-    InstaLogger.logger().info("Verified: " + str(information['verified']))
+    # InstaLogger.logger().info("Username: " + str(information['username']))
+    # InstaLogger.logger().info("Follower: " + str(information['followers']['count']))
+    # InstaLogger.logger().info("Verified: " + str(information['verified']))
     # InstaLogger.logger().info("Following: " + str(information['following']))
     # InstaLogger.logger().info("isPrivate: " + str(information['isprivate']))
-    return information
+    with open("out.csv", "a+") as outfile:
+        outfile.write(username + ", " + str(followers['count']) + ", " + isVerified + "\n")
 
 def extract_information(browser, username, limit_amount):
     InstaLogger.logger().info('Extracting information from ' + username)

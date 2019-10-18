@@ -17,5 +17,6 @@ def get_all_user_names_from_file():
     if len(sys.argv) != 2:
         sys.exit('- Please provide one file path!\n')
     with open(sys.argv[1], "r") as f:
-        usernames = f.readlines()
+        # usernames = f.readlines()
+        usernames = f.read().split('\n')
     return usernames
