@@ -500,12 +500,11 @@ def extract_simple_information(browser, username):
         user_link = "https://www.instagram.com/{}/".format(username)
         web_adress_navigator(browser, user_link)
     except PageNotFound404 as e:
-        raise NoInstaProfilePageFound(e)
+        InstaLogger.logger().error("404 on" + username)
+        return
 
     try:
-        userinfo = get_simple_user_info(browser, username)
+        get_simple_user_info(browser, username)
     except Exception as err:
         InstaLogger.logger().error("Couldn't get user profile. - Terminating")
         quit()
-
-    return userinfo
