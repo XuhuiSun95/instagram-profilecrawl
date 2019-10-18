@@ -388,3 +388,18 @@ def extract_information(browser, username, limit_amount):
     return userinfo, user_commented_list
 
 def extract_simple_information(browser, username):
+    InstaLogger.logger().info('Extracting information from ' + username)
+    """Get all the information for the given username"""
+    try:
+        user_link = "https://www.instagram.com/{}/".format(username)
+        web_adress_navigator(browser, user_link)
+    except PageNotFound404 as e:
+        raise NoInstaProfilePageFound(e)
+
+    try:
+        userinfo = get_user_info(browser, username)
+    except Exception as err:
+        InstaLogger.logger().error("Couldn't get user profile. - Terminating")
+        quit()
+
+    return userinfo

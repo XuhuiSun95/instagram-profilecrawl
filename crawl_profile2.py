@@ -12,7 +12,7 @@ from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.webdriver.firefox.options import Options as Firefox_Options
 
 from util.cli_helper import get_all_user_names_from_file
-from util.extractor import extract_information
+from util.extractor import extract_simple_information
 from util.account import login
 from util.chromedriver import init_chromedriver
 
@@ -54,17 +54,12 @@ try:
         information = []
         user_commented_list = []
         try:
-            information, user_commented_list = extract_information(browser, username, Settings.limit_amount)
+            information = extract_simple_information(browser, username)
         except:
             print("Error with user " + username)
             sys.exit(1)
 
         # Datasaver.save_profile_json(username,information)
-
-        # print ("Number of users who commented on their profile is ", len(user_commented_list),"\n")
-
-        # Datasaver.save_profile_commenters_txt(username,user_commented_list)
-        # print ("\nFinished. The json file and nicknames of users who commented were saved in profiles directory.\n")
 
 except KeyboardInterrupt:
     print('Aborted...')
