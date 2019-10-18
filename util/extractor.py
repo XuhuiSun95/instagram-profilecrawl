@@ -330,7 +330,7 @@ def extract_user_posts(browser, num_of_posts_to_do):
             InstaLogger.logger().error("Could not get information from post: " + postlink)
     return post_infos, user_commented_total_list
 
-def get_simple_user_info(browser, username):
+def get_simple_user_info(browser, username, filename):
     """Get the basic user info from the profile screen"""
     # num_of_posts = 0
     followers = { 'count' : 0}
@@ -423,7 +423,7 @@ def get_simple_user_info(browser, username):
     #     # 'bio_url': bio_url,
     #     # 'isprivate': isprivate,
     # }
-    
+
 
     # InstaLogger.logger().info("alias name: " + information['alias'])
     # InstaLogger.logger().info("bio: " + information['bio'])
@@ -434,7 +434,9 @@ def get_simple_user_info(browser, username):
     # InstaLogger.logger().info("Verified: " + str(information['verified']))
     # InstaLogger.logger().info("Following: " + str(information['following']))
     # InstaLogger.logger().info("isPrivate: " + str(information['isprivate']))
-    with open("out.csv", "a+") as outfile:
+
+    dest = filename + ".csv"
+    with open(dest, "a+") as outfile:
         outfile.write(username + ", " + str(followers['count']) + ", " + isVerified + "\n")
 
 def extract_information(browser, username, limit_amount):
@@ -493,7 +495,7 @@ def extract_information(browser, username, limit_amount):
 
     return userinfo, user_commented_list
 
-def extract_simple_information(browser, username):
+def extract_simple_information(browser, username, filename):
     InstaLogger.logger().info('Extracting information from ' + username)
     """Get all the information for the given username"""
     try:
@@ -504,7 +506,7 @@ def extract_simple_information(browser, username):
         return
 
     try:
-        get_simple_user_info(browser, username)
+        get_simple_user_info(browser, username, filename)
     except Exception as err:
         InstaLogger.logger().error("Couldn't get user profile. - Terminating")
         quit()
