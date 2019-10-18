@@ -330,6 +330,110 @@ def extract_user_posts(browser, num_of_posts_to_do):
             InstaLogger.logger().error("Could not get information from post: " + postlink)
     return post_infos, user_commented_total_list
 
+def get_simple_user_info(browser, username):
+    """Get the basic user info from the profile screen"""
+    # num_of_posts = 0
+    followers = { 'count' : 0}
+    isVerified = ""
+    # following = { 'count' : 0}
+    # prof_img = ""
+    # bio = ""
+    # bio_url = ""
+    # alias = ""
+    container = browser.find_element_by_class_name('v9tJq')
+    # isprivate = False
+    # try:
+    #     if container.find_element_by_class_name('Nd_Rl'):
+    #         isprivate = True
+    # except:
+    #     isprivate = False
+
+    try:
+        if container.find_element_by_class_name('coreSpriteVerifiedBadge '):
+            isVerified = "Yes"
+    except:
+        isVerified = "No"
+
+    # try:
+    #     alias = container.find_element_by_class_name('-vDIg').find_element_by_tag_name('h1').text
+    # except:
+    #     InstaLogger.logger().info("alias is empty")
+
+    # try:
+    #     bio = container.find_element_by_class_name('-vDIg') \
+    #         .find_element_by_tag_name('span').text
+    # except:
+    #     InstaLogger.logger().info("Bio is empty")
+
+    # try:
+    #     bio_url = container.find_element_by_class_name('yLUwa').text
+    # except:
+    #     InstaLogger.logger().info("Bio Url is empty")
+
+    # try:
+    #     img_container = browser.find_element_by_class_name('RR-M-')
+    #     prof_img = img_container.find_element_by_tag_name('img').get_attribute('src')
+    # except:
+    #     InstaLogger.logger().info("image is empty")
+
+    try:
+        infos = container.find_elements_by_class_name('Y8-fY')
+
+        # try:
+        #     num_of_posts = extract_exact_info(infos[0])
+        # except:
+        #     InstaLogger.logger().error("Number of Posts empty")
+
+
+        # try:
+        #     following = { 'count' : extract_exact_info(infos[2])}
+        # except:
+        #     InstaLogger.logger().error("Following is empty")
+
+        try:
+            followers = { 'count' : extract_exact_info(infos[1])}
+
+            # try:
+            #     if Settings.scrape_follower == True:
+            #         if isprivate == True:
+            #             InstaLogger.logger().info("Cannot get Follower List - private account")
+            #         else:
+            #             extract_followers(browser, username)
+            # except Exception as exception:
+            #     # Output unexpected Exceptions.
+            #     print("Unexpected error:", sys.exc_info()[0])
+            #     print(exception)
+
+            #     InstaLogger.logger().error("Cannot get Follower List")
+        except:
+            InstaLogger.logger().error("Follower is empty")
+    except:
+        InstaLogger.logger().error("Infos (Following, Abo, Posts) is empty")
+
+
+    information = {
+        # 'alias': alias,
+        'username': username,
+        'verified': isVerified,
+        # 'bio': bio,
+        # 'prof_img': prof_img,
+        # 'num_of_posts': num_of_posts,
+        'followers': followers,
+        # 'following': following,
+        # 'bio_url': bio_url,
+        # 'isprivate': isprivate,
+    }
+
+    # InstaLogger.logger().info("alias name: " + information['alias'])
+    # InstaLogger.logger().info("bio: " + information['bio'])
+    # InstaLogger.logger().info("url: " + information['bio_url'])
+    # InstaLogger.logger().info("Posts: " + str(information['num_of_posts']))
+    InstaLogger.logger().info("Username: " + str(information['username']))
+    InstaLogger.logger().info("Follower: " + str(information['followers']['count']))
+    InstaLogger.logger().info("Verified: " + str(information['verified']))
+    # InstaLogger.logger().info("Following: " + str(information['following']))
+    # InstaLogger.logger().info("isPrivate: " + str(information['isprivate']))
+    return information
 
 def extract_information(browser, username, limit_amount):
     InstaLogger.logger().info('Extracting information from ' + username)
@@ -397,7 +501,7 @@ def extract_simple_information(browser, username):
         raise NoInstaProfilePageFound(e)
 
     try:
-        userinfo = get_user_info(browser, username)
+        userinfo = get_simple_user_info(browser, username)
     except Exception as err:
         InstaLogger.logger().error("Couldn't get user profile. - Terminating")
         quit()
