@@ -36,6 +36,8 @@ except Exception as exc:
     print(exc)
     sys.exit()
 
+Settings.login_username = 'FILL_IN_USERNAME'
+Settings.login_password = 'FILL_IN_PASSWORD'
 Settings.scrape_posts_likers = False
 Settings.scrape_posts_infos = False
 
