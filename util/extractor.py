@@ -138,16 +138,14 @@ def extract_followers(browser, username):
         raise NoInstaProfilePageFound(e)
     sleep(5)
 
-    print('here1')
     elems = browser.find_elements_by_xpath("//body//main[@class='fIcML']//section//div[@class='-utLf']")
     for i in range(10):
         val = elems[i].get_attribute('innerHTML')
         with open("out.txt", "a+") as outfile:
-            outfile.write(val + "\n");
-    print('here2')
+            outfile.write(val + "\n")
 
     for i in range(10):
-        browser.execute_script("document.getElementsByClassName('fIcML')[0].children[0].remove()")
+        browser.execute_script("document.querySelector('.-utLf').remove()")
 
     isDone = False
 
@@ -156,13 +154,13 @@ def extract_followers(browser, username):
 
             start = time()
             browser.execute_script(
-                "document.getElementsByClassName('isgrP')[0].scrollTo(0,document.getElementsByClassName('isgrP')[0].scrollHeight)")
+                "document.querySelector('button').click()")
 
             while 1:
                 list_num = 0
                 try:
                     list_num = int(browser.execute_script(
-                            "return document.getElementsByClassName('PZuss')[0].children.length"));
+                            "return document.getElementsByClassName('-utLf').length"));
                     print(list_num)
                     if list_num != 0:
                         break
@@ -179,15 +177,15 @@ def extract_followers(browser, username):
                 print('done')
                 break
 
-            elems = browser.find_elements_by_xpath("//body//div[@class='PZuss']//a[@class='FPmhX notranslate _0imsa ']")
-            range_num = list_num - 12
+            elems = browser.find_elements_by_xpath("//body//main[@class='fIcML']//section//div[@class='-utLf']")
+            range_num = list_num - 10
             for i in range(range_num):
                 val = elems[i].get_attribute('innerHTML')
                 with open("out.txt", "a+") as outfile:
                     outfile.write(val + "\n");
 
             for i in range(range_num):
-                browser.execute_script("document.getElementsByClassName('PZuss')[0].children[0].remove()")
+                browser.execute_script("document.querySelector('.-utLf').remove()")
 
             print(time() - start)
 
@@ -198,7 +196,7 @@ def extract_followers(browser, username):
         except:
             continue
 
-    elems = browser.find_elements_by_xpath("//body//div[@class='PZuss']//a[@class='FPmhX notranslate _0imsa ']")
+    elems = browser.find_elements_by_xpath("//body//main[@class='fIcML']//section//div[@class='-utLf']")
     for i in range(len(elems)):
         val = elems[i].get_attribute('innerHTML')
         with open("out.txt", "a+") as outfile:
