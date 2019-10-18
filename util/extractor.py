@@ -151,20 +151,19 @@ def extract_followers(browser, username):
 
     while 1:
         try:
-
             start = time()
             browser.execute_script(
-                "document.querySelector('button').click()")
-
+                    "document.querySelector('button').click()")
             while 1:
                 list_num = 0
                 try:
                     list_num = int(browser.execute_script(
                             "return document.getElementsByClassName('-utLf').length"));
-                    print(list_num)
                     if list_num != 0:
+                        print('listnum')
                         break
                 except (KeyboardInterrupt, SystemExit):
+                    print('maybe here?')
                     # f.close()
                     raise
                 except:
@@ -176,9 +175,8 @@ def extract_followers(browser, username):
             if isDone:
                 print('done')
                 break
-
             elems = browser.find_elements_by_xpath("//body//main[@class='fIcML']//section//div[@class='-utLf']")
-            range_num = list_num - 10
+            range_num = list_num
             for i in range(range_num):
                 val = elems[i].get_attribute('innerHTML')
                 with open("out.txt", "a+") as outfile:
@@ -194,7 +192,12 @@ def extract_followers(browser, username):
             # f.close()
             raise
         except:
-            continue
+            check = browser.execute_script(
+                "document.querySelector('button').click()")
+            if not check:
+                break;
+            else:
+                continue
 
     elems = browser.find_elements_by_xpath("//body//main[@class='fIcML']//section//div[@class='-utLf']")
     for i in range(len(elems)):
